@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\MoviesList;
 use App\Livewire\Movie;
+use App\Livewire\MoviesList;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 Route::get('/films', MoviesList::class)->name('movieslist');
 Route::get('/films/{id}', Movie::class)->name('movie')->where('id', '[0-9]+');
