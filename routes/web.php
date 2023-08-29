@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\MoviesList;
+use App\Livewire\Movie;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+
+Route::get('/films', MoviesList::class)->name('movieslist');
+Route::get('/films/{id}', Movie::class)->name('movie')->where('id', '[0-9]+');
