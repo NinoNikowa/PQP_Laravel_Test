@@ -8,7 +8,7 @@ use Facades\App\Services\TheMovieDB\TheMovieDbAPI;
 
 class TheMovieDbUpdater
 {
-    protected $fields = ['title', 'tagline', 'homepage', 'poster_path', 'release_date', 'vote_average', 'vote_count'];
+    protected $fields = ['title', 'tagline', 'homepage', 'overview', 'poster_path', 'release_date', 'vote_average', 'vote_count'];
 
     private $trendingMovies = [];
 
@@ -17,6 +17,7 @@ class TheMovieDbUpdater
     private $log = [
         'trending_ids_count' => 0,
         'updated_movies' => 0,
+        'sync_disabled_movies' => 0,
         'created_movies' => 0,
         'created_genres' => 0,
         'movie_data_error' => 0,
@@ -65,11 +66,18 @@ class TheMovieDbUpdater
         $data = $this->movieDataParser($movieData);
         if (! $movie) {
             $movie = new Movie(['id' => $movieId, ...$data]);
-            $movie->save();
+            dump($movie->save());
             $this->log['created_movies']++;
+            $movie->id = $movieId; // previent un bug plus bas
         } else {
-            $movie->update($data);
-            $this->log['updated_movies']++;
+            if ($movie->disable_sync == 1) {
+                $this->log['sync_disabled_movies']++;
+
+                return;
+            } else {
+                $movie->update($data);
+                $this->log['updated_movies']++;
+            }
         }
 
         // Attache le film a la catégorisation genre
@@ -83,7 +91,6 @@ class TheMovieDbUpdater
         }
 
         $movie->moviesGenres()->sync($genres);
-
     }
 
     private function createMoviesGenre($id, $name)
