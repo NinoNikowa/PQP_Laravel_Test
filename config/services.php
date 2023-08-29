@@ -31,4 +31,7 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'themoviedb' => [
+        'bearer' => env('THE_MOVIE_DB_BEARER'),
+    ],
 ];

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('homepage');
             $table->string('poster_path');
             $table->date('release_date');
-            $table->float('vote_average',2,1);
+            $table->float('vote_average', 2, 1);
             $table->integer('vote_count');
             $table->boolean('is_trending')->default(true);
 
