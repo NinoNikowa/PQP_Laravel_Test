@@ -2,7 +2,9 @@
 
 namespace App\Services\TheMovieDB;
 
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class TheMovieDbAPI
 {
@@ -52,18 +54,26 @@ class TheMovieDbAPI
      */
     private function request(string $endpoint = '/', array $params = []): array
     {
+
         // ajout des params par défaut
         $params = array_merge($this->defaultParams, $params);
 
-        $response = Http::retry(3, 1000)
-            ->withHeaders($this->headers)
-            ->withQueryParameters($params)
-            ->get($this->api_url.$endpoint);
+        try {
 
-        if (! $response->successful()) {
+            $response = Http::retry(3, 1000)
+                ->withHeaders($this->headers)
+                ->withQueryParameters($params)
+                ->get($this->api_url.$endpoint);
+            if (! $response->successful()) {
+                return [];
+            }
+
+            return $response->json();
+
+        } catch (RequestException $e) {
+            Log::error($e);
+
             return [];
         }
-
-        return $response->json();
     }
 }
