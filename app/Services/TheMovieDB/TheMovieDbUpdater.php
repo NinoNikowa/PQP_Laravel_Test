@@ -79,7 +79,6 @@ class TheMovieDbUpdater
         $data = $this->movieDataParser($movieData);
         if (! $movie) {
             $movie = new Movie(['id' => $movieId, ...$data]);
-            dump($movie->save());
             $this->log['created_movies']++;
             $movie->id = $movieId; // previent un bug plus bas
         } else {

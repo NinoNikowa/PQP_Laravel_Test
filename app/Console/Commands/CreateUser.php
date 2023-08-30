@@ -29,10 +29,10 @@ class CreateUser extends Command
 
         // récupération des informations
         $input = [
-            'name' => $this->ask('Nom d‘utilisateur :'),
-            'email' => $this->ask('Adresse email :'),
-            'password' => $this->secret('Mot de passe :'),
-            'password_confirmation' => $this->secret('Confirmez le mot de passe :'),
+            'name' => $this->ask('Nom d‘utilisateur'),
+            'email' => $this->ask('Adresse email'),
+            'password' => $this->secret('Mot de passe'),
+            'password_confirmation' => $this->secret('Confirmez le mot de passe'),
         ];
 
         try {
