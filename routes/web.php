@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', MoviesList::class)->name('home');
 Route::get('/films', MoviesList::class)->name('movieslist');
 Route::get('/films/{id}', Movie::class)->name('movie')->where('id', '[0-9]+');

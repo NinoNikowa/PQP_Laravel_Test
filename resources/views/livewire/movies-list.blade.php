@@ -5,11 +5,11 @@
 
             @foreach ($movies as $movie)
                 <li>
-                    <a href="{{ route('movie',['id'=>$movie->id]) }}"
+                    <a wire:navigate href="{{ route('movie',['id'=>$movie->id]) }}"
                        class="flex flex-col rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:max-w-xl md:flex-row">
 
                         @if($movie->poster)
-                            <img src="{{ $movie->poster }}" width="100"/>
+                            <img class="rounded-lg" src="{{ $movie->poster }}" width="100"/>
                         @endif
                         <div class="flex flex-col justify-start p-6">
                             <h5
@@ -31,6 +31,11 @@
             @endforeach
 
         </ul>
+
+    </div>
+
+    <div class="py-7">
+        {{ $movies->links() }}
     </div>
 
 </div>
