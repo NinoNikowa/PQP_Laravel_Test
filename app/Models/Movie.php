@@ -16,6 +16,12 @@ class Movie extends Model
         return $this->belongsToMany(MoviesGenre::class);
     }
 
+    /**
+     * Retourne l'url compléte d'un poster, ou un string vide si vide
+     * Gére le cas d'une url mise en dure depuis le BO
+     *
+     * @return mixed|string
+     */
     public function getPosterAttribute()
     {
         if (! $this->poster_path) {
@@ -30,6 +36,6 @@ class Movie extends Model
         }
 
         // retourne la miniature du poster
-        return 'https://image.tmdb.org/t/p/w200'.$this->poster_path;
+        return config('services.themoviedb.image_base_url').$this->poster_path;
     }
 }

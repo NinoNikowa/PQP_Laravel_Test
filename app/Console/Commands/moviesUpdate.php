@@ -26,15 +26,19 @@ class moviesUpdate extends Command
      */
     public function handle()
     {
+        // Pour calculé le temps de mise à jour
         $timeStart = microtime(true);
 
         $this->info('Mise à jour en cours ...');
         $update = new TheMovieDbUpdater();
         $result = $update->update();
+
+        // affichage du log retour qui est un tableau
         foreach ($result as $key => $val) {
             $this->line($key.' : '.$val);
         }
 
+        // Calcul du temps de mise à jour
         $diff = microtime(true) - $timeStart;
         $sec = intval($diff);
 

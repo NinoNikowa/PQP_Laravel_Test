@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        // mise à jour des vidéos une fois par jour
         $schedule->command('app:movies-update')->daily();
     }
 

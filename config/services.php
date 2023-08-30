@@ -33,5 +33,7 @@ return [
 
     'themoviedb' => [
         'bearer' => env('THE_MOVIE_DB_BEARER'),
+        // https://developer.themoviedb.org/docs/image-basics
+        'image_base_url' => 'https://image.tmdb.org/t/p/w200',
     ],
 ];

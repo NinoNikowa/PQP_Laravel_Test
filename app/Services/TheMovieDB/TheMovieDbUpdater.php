@@ -24,6 +24,12 @@ class TheMovieDbUpdater
         'movies_isnt_trending' => 0,
     ];
 
+    /**
+     * Lance la récupération des données
+     * Sync les genres
+     * Désactive l'option trending des fiches qui ne sont plus dans le flux
+     * Retourne un tableau qui liste les actions menées
+     */
     public function update(): array
     {
         // chargement de la liste des filmes à mettre à jour
@@ -59,6 +65,13 @@ class TheMovieDbUpdater
         return $this->log;
     }
 
+    /**
+     * Met à jour une Movie avec une donnée du flux
+     * Créer les gens si nécessaire
+     * Sync les genres avec la Movie
+     *
+     * @return void
+     */
     private function movieUpdater($movieId, $movieData)
     {
         // Création / Mise à jour du film
@@ -93,6 +106,11 @@ class TheMovieDbUpdater
         $movie->moviesGenres()->sync($genres);
     }
 
+    /**
+     * Ajoute une genre si il existe pas puis le met dans $this->>moviesGenres pour éviter de le refaire
+     *
+     * @return MoviesGenre
+     */
     private function createMoviesGenre($id, $name)
     {
         $MoviesGenre = new MoviesGenre(['id' => $id, 'name' => $name]);
@@ -104,6 +122,9 @@ class TheMovieDbUpdater
         return $MoviesGenre;
     }
 
+    /**
+     * Parse la donnée en provenance de l'api d'un film pour ne garder que ce qui est lister dans $this->fields
+     */
     private function movieDataParser($movieData): array
     {
         $data = [];
@@ -117,16 +138,27 @@ class TheMovieDbUpdater
         return $data;
     }
 
+    /**
+     * Charge le flux des films depuis la liste des tendances
+     *
+     * @return void
+     */
     private function loadTrendingMovies()
     {
         $this->trendingMovies = TheMovieDbAPI::getTrendingMovies();
     }
 
+    /**
+     * Extracte tous les id de film depuis les données du flux listing
+     */
     private function getTrendingMoviesIds(): array
     {
         return array_column($this->trendingMovies, 'id');
     }
 
+    /**
+     * Extracte tous les id des genres depuis les données du flux listing
+     */
     private function getTrendingMoviesGenresIds(): array
     {
         $ids = [];
